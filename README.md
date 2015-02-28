@@ -1,4 +1,4 @@
-# Spring File Upload Storage
+# Spring File Upload Storage [![Build Status](https://travis-ci.org/lfridael/spring-file-upload-storage.svg?branch=master)](https://travis-ci.org/lfridael/spring-file-upload-storage)
 
 This is a small library for managing the storage of multipart file uploads in Spring MVC applications. 
 
@@ -20,3 +20,8 @@ Storing file uploads is a simple problem, but ad-hoc solutions become cumbersome
   * Spring Security 3.2.x
   * Spring Boot 1.2.x
 
+## Build
+
+```
+./gradlew
+```

@@ -3,3 +3,10 @@ build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
+
+# Mac
+.DS_Store
+
+# IDEA
+.idea
+*.iml

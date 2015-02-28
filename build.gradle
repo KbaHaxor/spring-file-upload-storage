@@ -1,0 +1,36 @@
+subprojects {
+  group = 'nl.runnable.spring-file-upload-storage'
+  version = '0.0.1-SNAPSHOT'
+
+  apply plugin: 'java'
+  apply plugin: 'groovy'
+
+  sourceCompatibility = 1.6
+  targetCompatibility = 1.6
+
+	ext {
+    springFrameworkVersion = '4.1.5.RELEASE'
+		slf4jVersion = '1.7.10'
+    spockVersion = '0.7-groovy-2.0'
+	  jetBrainsAnnotationsVersion = '13.0'
+	}
+
+  dependencies {
+    compile "org.springframework:spring-webmvc:${springFrameworkVersion}"
+    compile "org.springframework:spring-jdbc:${springFrameworkVersion}"
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.jetbrains:annotations:${jetBrainsAnnotationsVersion}"
+    testCompile "org.spockframework:spock-spring:${spockVersion}"
+    testCompile "org.springframework:spring-test:${springFrameworkVersion}"
+  }
+
+  repositories {
+    jcenter()
+  }
+}
+
+defaultTasks 'build'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.2.1'
+}
