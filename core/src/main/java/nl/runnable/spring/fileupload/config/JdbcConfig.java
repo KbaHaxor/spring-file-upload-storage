@@ -1,7 +1,7 @@
 package nl.runnable.spring.fileupload.config;
 
-import nl.runnable.spring.fileupload.MultipartFileRepository;
-import nl.runnable.spring.fileupload.impl.JdbcMultipartFileRepository;
+import nl.runnable.spring.fileupload.MultipartFileStorage;
+import nl.runnable.spring.fileupload.impl.JdbcMultipartFileStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class JdbcConfig {
 
   @Bean
-  MultipartFileRepository multipartFileRepository() {
-    return new JdbcMultipartFileRepository();
+  MultipartFileStorage multipartFileRepository() {
+    return new JdbcMultipartFileStorage();
   }
 
 }

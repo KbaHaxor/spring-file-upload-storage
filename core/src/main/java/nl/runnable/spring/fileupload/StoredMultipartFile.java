@@ -1,42 +1,23 @@
 package nl.runnable.spring.fileupload;
 
-import org.jetbrains.annotations.NotNull;
-import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 /**
- * Value Object that represents a multipart file stored in a {@link MultipartFileRepository}.
+ * Represents {@link MultipartFile}s stored in {@link nl.runnable.spring.fileupload.MultipartFileStorage}.
+ * This interface provides extra information.
  *
  * @author Laurens Fridael
  */
-public class StoredMultipartFile {
+public interface StoredMultipartFile extends MultipartFile {
 
-  private final String id;
+  String getId();
 
-  private final MultipartFile file;
+  String getUsername();
 
-  public StoredMultipartFile(@NotNull MultipartFile file, @NotNull String id) {
-    Assert.notNull(file, "MultipartFile cannot be null.");
-    Assert.hasText(id, "ID cannot be empty.");
-    this.file = file;
-    this.id = id;
-  }
+  Date getCreatedAt();
 
-  /**
-   * Obtains the ID.
-   *
-   * @return The ID
-   */
-  public String getId() {
-    return id;
-  }
+  Date getExpiresAt();
 
-  /**
-   * Obtains the MultipartFile.
-   *
-   * @return The MultipartFile.
-   */
-  public MultipartFile getFile() {
-    return file;
-  }
 }
