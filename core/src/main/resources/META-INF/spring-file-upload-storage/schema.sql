@@ -1,5 +1,5 @@
 create table sfus_file (
-	id varchar(255) not null,
+	id varchar(255) not null unique,
 	name varchar(255) not null,
 	original_filename varchar(255),
 	content_type varchar(255),
