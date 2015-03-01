@@ -18,7 +18,7 @@ subprojects {
   }
 
   dependencies {
-    compile "org.springframework:spring-webmvc:${springFrameworkVersion}"
+    compile "org.springframework:spring-web:${springFrameworkVersion}"
     compile "org.springframework:spring-jdbc:${springFrameworkVersion}"
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile "org.jetbrains:annotations:${jetBrainsAnnotationsVersion}"

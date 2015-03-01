@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +54,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
   /* Configuration */
 
-  @Value("${spring-file-upload-storage.database.init:true}")
+  @Value("${spring-file-upload-storage.database.autoInit:true}")
   private boolean initDatabaseAutomatically = true;
 
   /* Main operations */

@@ -4,11 +4,11 @@ Utility library for managing the temporary storage of multipart file uploads in 
 
 ## Problem
 
-Spring MVC has a nice abstraction for handling file uploads through multipart requests. But where do you store uploaded files when user interactions in your application span multiple HTTP requests?
+Spring MVC has a convenient abstraction for handling file uploads through multipart requests. But where do you store uploaded files during user interactions that span multiple HTTP requests? For example, in a multi-page form.
 
-* Storing uploads as temporary files on the filesystem is not the most secure approach when dealing with privacy-sensitive information.
-* Storing uploads as database BLOBs is the better approach with regards to security, but is not a trivial solution to implement.
-* You also need a way to manage uploads in a timely manner, not deleting them too soon and not keeping them around longer than necessary.
+* Storing uploads as temporary files on the filesystem is easily implemented, but is not the most secure approach when dealing with privacy-sensitive information.
+* Storing uploads as database BLOBs is more secure, but is not trivial to implement.
+* You also need a way to manage uploads in a timely manner, not keeping files around longer than necessary.
 
 Spring File Upload Storage aims to address the issues.
 
@@ -16,17 +16,19 @@ Spring File Upload Storage aims to address the issues.
 
 * Stores uploaded files in a database.
 * Works with any database that supports JDBC and SQL.
-* Uses a time-to-live mechanism to keep files 'alive'.
-* Cleans up expired files automatically. (The API also offers lets you delete files manually.)
+* Maintains files using a time-to-live mechanism.
+* Cleans up expired files automatically.
 * Autoconfiguration for Spring Boot.
 
 ## Dependencies
 
-* Required:  
+* Required:
   * Java 1.6
-  * Spring 4.1.x (might work with Spring 4.0.x and Spring 3.2.x, but these version are not tested)
+  * Spring 4.0 or higher, specifically these artifacts
+  	* spring-web
+  	* spring-jdbc
+  	* slf4j-api
 * Optional:
-  * Spring Security 3.2.x
   * Spring Boot 1.2.x
 
 ## Build

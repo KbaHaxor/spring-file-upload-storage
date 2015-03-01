@@ -1,6 +1,5 @@
 package nl.runnable.spring.fileupload
 
-import nl.runnable.spring.fileupload.config.JdbcConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.ContextConfiguration
@@ -9,7 +8,7 @@ import spock.lang.Specification
 /**
  * @author Laurens Fridael
  */
-@ContextConfiguration(classes = [JdbcConfig, TestConfig])
+@ContextConfiguration(classes = [TestConfig])
 class MultipartFileStorageSpec extends Specification {
 
   @Autowired

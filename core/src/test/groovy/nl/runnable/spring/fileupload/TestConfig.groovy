@@ -1,9 +1,11 @@
 package nl.runnable.spring.fileupload
 
+import nl.runnable.spring.fileupload.config.DefaultConfig
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.jdbc.datasource.SingleConnectionDataSource
 
 import javax.sql.DataSource
@@ -12,6 +14,7 @@ import javax.sql.DataSource
  * @author Laurens Fridael
  */
 @Configuration
+@Import(DefaultConfig)
 class TestConfig {
 
   @Bean
