@@ -18,7 +18,6 @@ Spring File Upload Storage aims to address the issues.
 * Works with any database that supports JDBC and SQL.
 * Maintains files using a time-to-live mechanism.
 * Cleans up expired files automatically.
-* Autoconfiguration for Spring Boot.
 
 ## Dependencies
 
@@ -28,8 +27,6 @@ Spring File Upload Storage aims to address the issues.
   	* spring-web
   	* spring-jdbc
   * slf4j-api
-* Optional:
-  * Spring Boot 1.2.x
 
 ## Build
 
