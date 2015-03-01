@@ -1,6 +1,6 @@
 subprojects {
   group = 'nl.runnable.spring-file-upload-storage'
-  version = '0.0.1'
+  version = '0.0.2'
 
   apply plugin: 'java'
   apply plugin: 'groovy'
