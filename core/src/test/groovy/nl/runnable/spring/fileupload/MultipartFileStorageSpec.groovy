@@ -16,6 +16,10 @@ class MultipartFileStorageSpec extends Specification {
 
   String fileId
 
+  String context = 'test-context'
+
+  String otherContext = 'another-context'
+
   def setup() {
     def file = new MockMultipartFile(
         'test.pdf',
@@ -23,11 +27,14 @@ class MultipartFileStorageSpec extends Specification {
         'application/pdf',
         [1, 2, 3, 4] as byte[]
     )
-    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, 'my-context')
+    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
+    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
+    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, otherContext)
   }
 
   def cleanup() {
-    storage.delete(fileId)
+    storage.deleteByContext(context)
+    storage.deleteByContext(otherContext)
   }
 
   def 'Retrieving a file yields data that is equivalent to that of the input file'() {
@@ -36,6 +43,7 @@ class MultipartFileStorageSpec extends Specification {
     def tempFile = File.createTempFile('test', 'file')
     file.transferTo(tempFile)
     then:
+    file.id == fileId
     file.name == 'test.pdf'
     file.originalFilename == 'test.pdf.original'
     file.contentType == 'application/pdf'
@@ -43,14 +51,14 @@ class MultipartFileStorageSpec extends Specification {
     !file.empty
     file.bytes == [1, 2, 3, 4] as byte[]
     file.id == fileId
-    file.context == 'my-context'
+    file.context == context
     file.createdAt
     file.expiresAt.time == file.createdAt.time + (MultipartFileStorage.TTL_30_MINUTES * 1000)
   }
 
   def 'Filtering files by context yields the matching files'() {
     expect:
-    storage.filterByContext('my-context').size == 1
+    storage.filterByContext(context).size == 2
   }
 
   def "Transferring a multipart file's contents to a system file yields identical content"() {
@@ -83,6 +91,7 @@ class MultipartFileStorageSpec extends Specification {
     storage.delete(fileId) == 0
   }
 
+
   def 'Deleting expired files removes them from storage'() {
     expect:
     storage.deleteExpired() == 0
@@ -94,4 +103,9 @@ class MultipartFileStorageSpec extends Specification {
     !storage.find(fileId)
   }
 
+  def 'Deleting files by context removes them from storage'() {
+    expect:
+    storage.deleteByContext(context) == 2
+    storage.deleteByContext(otherContext) == 1
+  }
 }

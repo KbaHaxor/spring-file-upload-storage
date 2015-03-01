@@ -67,6 +67,13 @@ public interface MultipartFileStorage {
   int delete(@NotNull String id);
 
   /**
+   * Deletes files matching a given context.
+   * @param context The context to filter against.
+   * @return The number of files deleted.
+   */
+  int deleteByContext(@NotNull String context);
+
+  /**
    * Deletes expired files.
    *
    * @return The number of files deleted.

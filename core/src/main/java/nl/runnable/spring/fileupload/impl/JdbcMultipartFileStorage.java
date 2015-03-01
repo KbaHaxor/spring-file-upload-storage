@@ -138,6 +138,13 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
   }
 
   @Override
+  public int deleteByContext(@NotNull String context) {
+    Assert.hasText(context, "Context cannot be empty.");
+
+    return jdbc.update(SqlConstants.DELETE_BY_CONTEXT, context);
+  }
+
+  @Override
   public int deleteExpired() {
     Date now = new Date();
     return jdbc.update(SqlConstants.DELETE_EXPIRED, now.getTime());
