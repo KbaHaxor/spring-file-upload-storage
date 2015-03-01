@@ -8,11 +8,11 @@ abstract class SqlConstants {
   static final int COLUMN_COUNT = 9;
 
   static final String INSERT_INTO = "INSERT INTO sfus_file " +
-      "(id, name, original_filename, content_type, size, data, username, created_at, expires_at) " +
+      "(id, name, original_filename, content_type, size, data, context, created_at, expires_at) " +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   static final String SELECT_BY_ID =
-      "SELECT id, name, original_filename, content_type, size, username, created_at, expires_at " +
+      "SELECT id, name, original_filename, content_type, size, context, created_at, expires_at " +
           "FROM sfus_file WHERE id = ?";
 
   static final String DELETE_BY_ID = "DELETE FROM sfus_file WHERE id = ?";

@@ -5,7 +5,7 @@ create table sfus_file (
 	content_type varchar(255),
 	size int not null,
 	data blob,
-	username varchar(255),
+	context varchar(255),
 	created_at bigint not null,
 	expires_at bigint not null
 );

@@ -39,12 +39,12 @@ class MultipartFileStorageSpec extends Specification {
     !file.empty
     file.bytes == [1, 2, 3, 4] as byte[]
     file.id == fileId
-    file.username == 'john'
+    file.context == 'john'
     file.createdAt
     file.expiresAt.time == file.createdAt.time + (MultipartFileStorage.TTL_30_MINUTES * 1000)
   }
 
-  def 'Transferring a multipart file\'s contents to a system file yields identical content'() {
+  def "Transferring a multipart file's contents to a system file yields identical content"() {
     setup:
     def file = storage.find(fileId)
     def tempFile = File.createTempFile(file.originalFilename, '.tmp');
@@ -59,7 +59,7 @@ class MultipartFileStorageSpec extends Specification {
     tempFile.delete()
   }
 
-  def 'Setting a file\'s time-to-live changes its expiration'() {
+  def "Setting a file's time-to-live changes its expiration"() {
     when:
     def expiresAt = storage.setTimeToLive(fileId, 1000);
     def file = storage.find(fileId)

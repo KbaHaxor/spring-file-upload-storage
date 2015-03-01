@@ -23,12 +23,12 @@ public interface MultipartFileStorage {
    * @param file                The multipart file.
    * @param timeToLiveInSeconds The time to keep the file in storage. After this time expires, the file becomes
    *                            eligible for cleanup.
-   * @param username            The user name, can be {@literal null}. The username can later be retrieved using
-   *                            {@link StoredMultipartFile#getUsername()}.
+   * @param context             Optional value to associate with this file. The context can, for example, be the
+   *                            username. The context can be retrieved using {@link StoredMultipartFile#getContext()}.
    * @return The ID under which the file is stored.
    */
   @NotNull
-  String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String username);
+  String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String context);
 
   /**
    * Obtains a file.

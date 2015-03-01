@@ -61,12 +61,13 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
   @NotNull
   @Override
-  public String save(@NotNull final MultipartFile file, int timeToLiveInSeconds, @Nullable final String username) {
+  public String save(@NotNull final MultipartFile file, int timeToLiveInSeconds, @Nullable final String context) {
     Assert.notNull(file, "File cannot be null.");
     if (file.getSize() > Integer.MAX_VALUE) {
       throw new IllegalArgumentException(String.format("Cannot store files larger than %d bytes.", Integer.MAX_VALUE));
     }
     Assert.isTrue(timeToLiveInSeconds >= 0, "Time to live must be greater than or equal to 0.");
+    Assert.isTrue(context == null || context.length() <= 255, "Context cannot be longer than 255 characters");
 
     final String id = idGenerator.generateId();
     final Date createdAt = new Date();
@@ -85,7 +86,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
           ps.setString(pos++, file.getContentType());
           ps.setInt(pos++, (int) file.getSize());
           lobCreator.setBlobAsBinaryStream(ps, pos++, file.getInputStream(), (int) file.getSize());
-          ps.setString(pos++, username);
+          ps.setString(pos++, context);
           ps.setLong(pos++, createdAt.getTime());
           ps.setLong(pos++, expiresAt.getTime());
           Assert.state(pos - 1 == SqlConstants.COLUMN_COUNT, "Unexpected column count.");
@@ -148,7 +149,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
         file.setOriginalFilename(rs.getString("original_filename"));
         file.setContentType(rs.getString("content_type"));
         file.setSize(rs.getInt("size"));
-        file.setUsername(rs.getString("username"));
+        file.setContext(rs.getString("context"));
         file.setCreatedAt(new Date(rs.getLong("created_at")));
         file.setExpiresAt(new Date(rs.getLong("expires_at")));
         files.add(file);
@@ -168,9 +169,9 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     if (isTableAvailable()) {
       return;
     }
-    Resource resource = new ClassPathResource("META-INF/spring-file-upload-storage/create-schema.sql");
+    Resource resource = new ClassPathResource("META-INF/spring-file-upload-storage/schema.sql");
     String sql = FileCopyUtils.copyToString(new InputStreamReader(resource.getInputStream()));
-    logger.info("Creating database using schema:{}", sql);
+    logger.info("Creating database using schema:\n{}", sql);
     jdbc.execute(sql);
   }
 

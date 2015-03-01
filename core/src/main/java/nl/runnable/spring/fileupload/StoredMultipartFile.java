@@ -14,7 +14,7 @@ public interface StoredMultipartFile extends MultipartFile {
 
   String getId();
 
-  String getUsername();
+  String getContext();
 
   Date getCreatedAt();
 

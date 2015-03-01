@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
  * @author Laurens Fridael
  */
 @Configuration
-class CleanupExpiredFilesConfig {
+class CleanupExpiredFilesJobConfig {
 
   @Bean
   static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {

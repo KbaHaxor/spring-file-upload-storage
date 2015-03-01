@@ -8,7 +8,7 @@ import spock.lang.Specification
 /**
  * @author Laurens Fridael
  */
-@ContextConfiguration(classes = [TestConfig, CleanupExpiredFilesConfig])
+@ContextConfiguration(classes = [TestConfig, CleanupExpiredFilesJobConfig])
 class CleanupExpiredFilesJobSpec extends Specification {
 
   @Autowired

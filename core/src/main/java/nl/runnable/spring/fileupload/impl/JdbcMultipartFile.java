@@ -30,7 +30,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
 
   private long size;
 
-  private String username;
+  private String context;
 
   private Date createdAt;
 
@@ -119,12 +119,12 @@ class JdbcMultipartFile implements StoredMultipartFile {
   }
 
 
-  public String getUsername() {
-    return username;
+  public String getContext() {
+    return context;
   }
 
-  void setUsername(String username) {
-    this.username = username;
+  void setContext(String context) {
+    this.context = context;
   }
 
   public Date getCreatedAt() {
