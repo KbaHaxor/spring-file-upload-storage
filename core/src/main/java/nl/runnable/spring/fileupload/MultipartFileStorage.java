@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Defines data access operations for {@link MultipartFile}s.</p>
@@ -38,6 +39,14 @@ public interface MultipartFileStorage {
    */
   @Nullable
   StoredMultipartFile find(@NotNull String id);
+
+  /**
+   * Obtains files matching a given context.
+   *
+   * @param context The context to filter against.
+   * @return The matching files, sorted by the time they were created.
+   */
+  List<StoredMultipartFile> filterByContext(@NotNull String context);
 
   /**
    * Sets a file's time to live.

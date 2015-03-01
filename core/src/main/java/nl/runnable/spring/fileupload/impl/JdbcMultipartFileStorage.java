@@ -103,12 +103,19 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
   public StoredMultipartFile find(@NotNull String id) {
     Assert.hasText(id, "File ID cannot be empty.");
 
-    final List<JdbcMultipartFile> files = jdbc.query(SqlConstants.SELECT_BY_ID, new JdbcMultiPartFileResultExtractor
-        (), id);
+    final List<StoredMultipartFile> files = jdbc.query(SqlConstants.SELECT_BY_ID,
+        new JdbcMultiPartFileResultExtractor(), id);
     if (!files.isEmpty()) {
       return files.get(0);
     }
     return null;
+  }
+
+  @Override
+  public List<StoredMultipartFile> filterByContext(@NotNull String context) {
+    Assert.hasText(context, "Context cannot be empty.");
+
+    return jdbc.query(SqlConstants.SELECT_BY_CONTEXT, new JdbcMultiPartFileResultExtractor(), context);
   }
 
   @Override
@@ -138,10 +145,10 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
   /* Utility */
 
-  private final class JdbcMultiPartFileResultExtractor implements ResultSetExtractor<List<JdbcMultipartFile>> {
+  private final class JdbcMultiPartFileResultExtractor implements ResultSetExtractor<List<StoredMultipartFile>> {
     @Override
-    public List<JdbcMultipartFile> extractData(final ResultSet rs) throws SQLException, DataAccessException {
-      final List<JdbcMultipartFile> files = new ArrayList<JdbcMultipartFile>();
+    public List<StoredMultipartFile> extractData(final ResultSet rs) throws SQLException, DataAccessException {
+      final List<StoredMultipartFile> files = new ArrayList<StoredMultipartFile>();
       while (rs.next()) {
         final JdbcMultipartFile file = new JdbcMultipartFile(jdbc);
         file.setId(rs.getString("id"));

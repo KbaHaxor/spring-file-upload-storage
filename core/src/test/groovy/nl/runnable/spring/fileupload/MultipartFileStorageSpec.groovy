@@ -23,13 +23,17 @@ class MultipartFileStorageSpec extends Specification {
         'application/pdf',
         [1, 2, 3, 4] as byte[]
     )
-    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, 'john')
+    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, 'my-context')
+  }
+
+  def cleanup() {
+    storage.delete(fileId)
   }
 
   def 'Retrieving a file yields data that is equivalent to that of the input file'() {
     when:
     def file = storage.find(fileId)
-    def tempFile = File.createTempFile('test', 'file');
+    def tempFile = File.createTempFile('test', 'file')
     file.transferTo(tempFile)
     then:
     file.name == 'test.pdf'
@@ -39,15 +43,20 @@ class MultipartFileStorageSpec extends Specification {
     !file.empty
     file.bytes == [1, 2, 3, 4] as byte[]
     file.id == fileId
-    file.context == 'john'
+    file.context == 'my-context'
     file.createdAt
     file.expiresAt.time == file.createdAt.time + (MultipartFileStorage.TTL_30_MINUTES * 1000)
+  }
+
+  def 'Filtering files by context yields the matching files'() {
+    expect:
+    storage.filterByContext('my-context').size == 1
   }
 
   def "Transferring a multipart file's contents to a system file yields identical content"() {
     setup:
     def file = storage.find(fileId)
-    def tempFile = File.createTempFile(file.originalFilename, '.tmp');
+    def tempFile = File.createTempFile(file.originalFilename, '.tmp')
     tempFile.deleteOnExit()
 
     when:
@@ -61,7 +70,7 @@ class MultipartFileStorageSpec extends Specification {
 
   def "Setting a file's time-to-live changes its expiration"() {
     when:
-    def expiresAt = storage.setTimeToLive(fileId, 1000);
+    def expiresAt = storage.setTimeToLive(fileId, 1000)
     def file = storage.find(fileId)
     then:
     expiresAt.time == file.expiresAt.time

@@ -15,6 +15,10 @@ abstract class SqlConstants {
       "SELECT id, name, original_filename, content_type, size, context, created_at, expires_at " +
           "FROM sfus_file WHERE id = ?";
 
+  static final String SELECT_BY_CONTEXT =
+      "SELECT id, name, original_filename, content_type, size, context, created_at, expires_at " +
+          "FROM sfus_file WHERE context = ?";
+
   static final String DELETE_BY_ID = "DELETE FROM sfus_file WHERE id = ?";
 
   static final String SELECT_DATA_BY_ID = "SELECT data FROM sfus_file WHERE id = ?";
