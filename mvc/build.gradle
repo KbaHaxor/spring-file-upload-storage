@@ -1,0 +1,12 @@
+dependencies {
+  compile project(':core')
+  compile "org.springframework:spring-webmvc:${springFrameworkVersion}"
+  /*
+    TODO: Servlet dependency scope should become the equivalent of Maven 'provided'
+    This can be made to work when running Gradle standalone, but that solution breaks the IntelliJ classpath.
+   */
+  compile 'javax.servlet:javax.servlet-api:3.0.1'
+  testCompile ('org.springframework.hateoas:spring-hateoas:0.16.0.RELEASE') { transitive = false }
+}
+
+

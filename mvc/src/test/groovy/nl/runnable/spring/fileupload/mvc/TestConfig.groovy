@@ -1,4 +1,4 @@
-package nl.runnable.spring.fileupload
+package nl.runnable.spring.fileupload.mvc
 
 import nl.runnable.spring.fileupload.config.DefaultFileUploadConfig
 import org.springframework.beans.factory.annotation.Qualifier
@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.jdbc.datasource.SingleConnectionDataSource
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 import javax.sql.DataSource
 
@@ -14,7 +15,8 @@ import javax.sql.DataSource
  * @author Laurens Fridael
  */
 @Configuration
-@Import(DefaultFileUploadConfig)
+@EnableWebMvc
+@Import([DefaultFileUploadConfig, DefaultFileUploadMvcConfig])
 class TestConfig {
 
   @Bean

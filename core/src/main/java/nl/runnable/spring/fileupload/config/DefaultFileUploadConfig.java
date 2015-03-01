@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Laurens Fridael
  */
 @Configuration
-public class DefaultConfig {
+public class DefaultFileUploadConfig {
 
   @Bean
   MultipartFileStorage multipartFileRepository() {
