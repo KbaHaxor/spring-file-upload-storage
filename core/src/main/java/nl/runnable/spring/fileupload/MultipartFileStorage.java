@@ -24,9 +24,11 @@ public interface MultipartFileStorage {
    * @param file                The multipart file.
    * @param timeToLiveInSeconds The time to keep the file in storage. After this time expires, the file becomes
    *                            eligible for cleanup.
-   * @param context             Optional value to associate with this file. The context can, for example, be the
-   *                            username. The context can be retrieved using {@link StoredMultipartFile#getContext()}.
-   * @return The ID under which the file is stored.
+   * @param context             Optional context value to associate with this file. The context can, for example, be the
+   *                            username or the HTTP session ID. The purpose of the context is to make application code
+   *                            responsible for managing client state. The context can be retrieved using
+   *                            {@link StoredMultipartFile#getContext()}.
+   * @return The ID of the stored file.
    */
   @NotNull
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String context);
@@ -68,6 +70,7 @@ public interface MultipartFileStorage {
 
   /**
    * Deletes files matching a given context.
+   *
    * @param context The context to filter against.
    * @return The number of files deleted.
    */
