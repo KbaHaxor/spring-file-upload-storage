@@ -60,11 +60,30 @@ class MultipartFileStorageSpec extends Specification {
     tempFile.delete()
   }
 
+  def 'Setting a file\'s time-to-live changes its expiration'() {
+    when:
+    def expiresAt = storage.setTimeToLive(fileId, 1000);
+    def file = storage.find(fileId)
+    then:
+    expiresAt.time == file.expiresAt.time
+  }
+
   def 'Deleting a file removes it from storage'() {
     expect:
     storage.delete(fileId)
     !storage.find(fileId)
     !storage.delete(fileId)
+  }
+
+  def 'Deleting expired files removes them from storage'() {
+    expect:
+    storage.deleteExpired() == 0
+
+    when:
+    storage.setTimeToLive(fileId, 0)
+    then:
+    storage.deleteExpired() == 1
+    !storage.find(fileId)
   }
 
 }

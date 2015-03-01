@@ -43,8 +43,6 @@ import java.util.List;
  */
 public class JdbcMultipartFileStorage implements MultipartFileStorage, InitializingBean {
 
-  private static final int DEFAULT_TTL = 1800; // 30 minutes
-
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
   /* Dependencies */
@@ -69,7 +67,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     if (file.getSize() > Integer.MAX_VALUE) {
       throw new IllegalArgumentException(String.format("Cannot store files larger than %d bytes.", Integer.MAX_VALUE));
     }
-    Assert.isTrue(timeToLiveInSeconds > 0, "Time to live must be greater than 0.");
+    Assert.isTrue(timeToLiveInSeconds >= 0, "Time to live must be greater than or equal to 0.");
 
     final String id = idGenerator.generateId();
     final Date createdAt = new Date();
@@ -89,8 +87,8 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
           ps.setInt(pos++, (int) file.getSize());
           lobCreator.setBlobAsBinaryStream(ps, pos++, file.getInputStream(), (int) file.getSize());
           ps.setString(pos++, username);
-          ps.setTimestamp(pos++, new Timestamp(createdAt.getTime()));
-          ps.setTimestamp(pos++, new Timestamp(expiresAt.getTime()));
+          ps.setLong(pos++, createdAt.getTime());
+          ps.setLong(pos++, expiresAt.getTime());
           Assert.state(pos - 1 == SqlConstants.COLUMN_COUNT, "Unexpected column count.");
         } catch (final IOException e) {
           throw new RuntimeException(e);
@@ -115,11 +113,14 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
   @Override
   @Nullable
-  public Date extendTimeToLive(@NotNull String id, int timeToLiveInSeconds) {
+  public Date setTimeToLive(@NotNull String id, int timeToLiveInSeconds) {
     Assert.hasText(id, "File ID cannot be empty.");
-    Assert.isTrue(timeToLiveInSeconds > 0, "Time to live must be greater than 0.");
+    Assert.isTrue(timeToLiveInSeconds >= 0, "Time to live must be greater than or equal to 0.");
 
-    throw new UnsupportedOperationException("Not yet implemented");
+    Date now = new Date();
+    Date expiresAt = new Date(now.getTime() + timeToLiveInSeconds * 1000);
+    int count = jdbc.update(SqlConstants.UPDATE_EXPIRES_AT, expiresAt.getTime(), id);
+    return count == 1 ? expiresAt : null;
   }
 
   @Override
@@ -128,6 +129,12 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
     final int count = jdbc.update(SqlConstants.DELETE_BY_ID, id);
     return count == 1;
+  }
+
+  @Override
+  public int deleteExpired() {
+    Date now = new Date();
+    return jdbc.update(SqlConstants.DELETE_EXPIRED, now.getTime());
   }
 
   /* Utility */
@@ -144,8 +151,8 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
         file.setContentType(rs.getString("content_type"));
         file.setSize(rs.getInt("size"));
         file.setUsername(rs.getString("username"));
-        file.setCreatedAt(rs.getTimestamp("created_at"));
-        file.setExpiresAt(rs.getTimestamp("expires_at"));
+        file.setCreatedAt(new Date(rs.getLong("created_at")));
+        file.setExpiresAt(new Date(rs.getLong("expires_at")));
         files.add(file);
       }
       return files;

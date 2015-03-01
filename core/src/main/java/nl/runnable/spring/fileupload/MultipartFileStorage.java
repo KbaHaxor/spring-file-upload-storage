@@ -40,14 +40,14 @@ public interface MultipartFileStorage {
   StoredMultipartFile find(@NotNull String id);
 
   /**
-   * Extends a file's time to live.
+   * Sets a file's time to live.
    *
    * @param id                  The file ID.
    * @param timeToLiveInSeconds The time to live from now.
    * @return The new date/time at which the file is due to expire or {@literal null} if no matching file was found.
    */
   @Nullable
-  Date extendTimeToLive(@NotNull String id, int timeToLiveInSeconds);
+  Date setTimeToLive(@NotNull String id, int timeToLiveInSeconds);
 
   /**
    * Deletes a file.
@@ -56,5 +56,12 @@ public interface MultipartFileStorage {
    * @return {@literal true} if the file was found and deleted, {@literal false} if not.
    */
   boolean delete(@NotNull String id);
+
+  /**
+   * Deletes expired files.
+   *
+   * @return The number of files deleted.
+   */
+  int deleteExpired();
 
 }

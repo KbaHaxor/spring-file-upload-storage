@@ -21,4 +21,7 @@ abstract class SqlConstants {
 
   static final String SELECT_COUNT = "SELECT COUNT(*) FROM sfus_file";
 
+  static final String UPDATE_EXPIRES_AT = "UPDATE sfus_file SET expires_at = ? WHERE id = ?";
+
+  static final String DELETE_EXPIRED = "DELETE FROM sfus_file WHERE expires_at <= ?";
 }

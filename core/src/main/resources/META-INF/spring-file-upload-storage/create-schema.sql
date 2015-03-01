@@ -6,6 +6,6 @@ create table sfus_file (
 	size int not null,
 	data blob,
 	username varchar(255),
-	created_at timestamp not null,
-	expires_at timestamp not null
+	created_at bigint not null,
+	expires_at bigint not null
 );

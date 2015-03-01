@@ -45,11 +45,11 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return id;
   }
 
-  public void setId(final String id) {
+  void setId(final String id) {
     this.id = id;
   }
 
-  public void setName(final String name) {
+  void setName(final String name) {
     this.name = name;
   }
 
@@ -58,7 +58,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return name;
   }
 
-  public void setOriginalFilename(final String originalFilename) {
+  void setOriginalFilename(final String originalFilename) {
     this.originalFilename = originalFilename;
   }
 
@@ -67,7 +67,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return originalFilename;
   }
 
-  public void setContentType(final String contentType) {
+  void setContentType(final String contentType) {
     this.contentType = contentType;
   }
 
@@ -81,7 +81,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return getSize() == 0;
   }
 
-  public void setSize(final long size) {
+  void setSize(final long size) {
     Assert.isTrue(size <= Integer.MAX_VALUE);
     this.size = size;
   }
@@ -123,7 +123,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return username;
   }
 
-  public void setUsername(String username) {
+  void setUsername(String username) {
     this.username = username;
   }
 
@@ -131,7 +131,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return createdAt;
   }
 
-  public void setCreatedAt(Date createdAt) {
+  void setCreatedAt(Date createdAt) {
     this.createdAt = createdAt;
   }
 
@@ -139,7 +139,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     return expiresAt;
   }
 
-  public void setExpiresAt(Date expiresAt) {
+  void setExpiresAt(Date expiresAt) {
     this.expiresAt = expiresAt;
   }
 }
