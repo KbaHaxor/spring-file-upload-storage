@@ -1,9 +1,10 @@
 subprojects {
   group = 'nl.runnable.spring-file-upload-storage'
-  version = '0.0.1-SNAPSHOT'
+  version = '0.0.1'
 
   apply plugin: 'java'
   apply plugin: 'groovy'
+  apply plugin: 'maven-publish'
 
   sourceCompatibility = 1.6
   targetCompatibility = 1.6
@@ -31,6 +32,27 @@ subprojects {
   repositories {
     jcenter()
   }
+
+  task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        from components.java
+        artifact sourceJar {
+          classifier "sources"
+        }
+      }
+    }
+    repositories {
+      mavenLocal()
+      // TODO: Add Bintray repository
+    }
+  }
+
 }
 
 defaultTasks 'build'

@@ -27,7 +27,7 @@ Spring File Upload Storage aims to address the issues.
   * Spring 4.0 or higher, specifically these artifacts
   	* spring-web
   	* spring-jdbc
-  	* slf4j-api
+  * slf4j-api
 * Optional:
   * Spring Boot 1.2.x
 
