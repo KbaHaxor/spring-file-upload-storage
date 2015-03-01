@@ -53,9 +53,9 @@ public interface MultipartFileStorage {
    * Deletes a file.
    *
    * @param id The file's ID.
-   * @return {@literal true} if the file was found and deleted, {@literal false} if not.
+   * @return The number of files deleted, which is either 0 or 1.
    */
-  boolean delete(@NotNull String id);
+  int delete(@NotNull String id);
 
   /**
    * Deletes expired files.

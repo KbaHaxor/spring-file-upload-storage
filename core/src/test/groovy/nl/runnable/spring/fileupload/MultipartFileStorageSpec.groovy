@@ -70,9 +70,9 @@ class MultipartFileStorageSpec extends Specification {
 
   def 'Deleting a file removes it from storage'() {
     expect:
-    storage.delete(fileId)
+    storage.delete(fileId) == 1
     !storage.find(fileId)
-    !storage.delete(fileId)
+    storage.delete(fileId) == 0
   }
 
   def 'Deleting expired files removes them from storage'() {

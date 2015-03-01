@@ -32,5 +32,9 @@ Spring File Upload Storage aims to address the issues.
 ## Build
 
 ```
+# *NIX
 ./gradlew
+
+# Windows
+./gradlew.bat
 ```

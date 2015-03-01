@@ -124,11 +124,10 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
   }
 
   @Override
-  public boolean delete(@NotNull String id) {
+  public int delete(@NotNull String id) {
     Assert.hasText(id, "File ID cannot be empty.");
 
-    final int count = jdbc.update(SqlConstants.DELETE_BY_ID, id);
-    return count == 1;
+    return jdbc.update(SqlConstants.DELETE_BY_ID, id);
   }
 
   @Override
