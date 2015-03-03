@@ -58,7 +58,7 @@ class MultipartFileStorageSpec extends Specification {
 
   def 'Filtering files by context yields the matching files'() {
     expect:
-    storage.filterByContext(context).size == 2
+    storage.findByContext(context).size == 2
   }
 
   def "Transferring a multipart file's contents to a system file yields identical content"() {
@@ -107,5 +107,17 @@ class MultipartFileStorageSpec extends Specification {
     expect:
     storage.deleteByContext(context) == 2
     storage.deleteByContext(otherContext) == 1
+    storage.count() == 0
+  }
+
+  def 'Deleting all files removes them from storage'() {
+    expect:
+    storage.deleteAll() == 3
+    storage.count() == 0
+  }
+
+  def 'Can obtain the number of stored files'() {
+    expect:
+    storage.count() == 3
   }
 }

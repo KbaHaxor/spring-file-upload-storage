@@ -72,7 +72,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     final String id = idGenerator.generateId();
     final Date createdAt = new Date();
     final Date expiresAt = new Date(createdAt.getTime() + timeToLiveInSeconds * 1000);
-    logger.info("Saving multipart file '{}'. File expires at: {} ", id, expiresAt);
+    logger.debug("Saving multipart file '{}'. Expires at: {} ", id, expiresAt);
     jdbc.execute(SqlConstants.INSERT_INTO, new AbstractLobCreatingPreparedStatementCallback(lobHandler) {
 
       @Override
@@ -111,8 +111,9 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     return null;
   }
 
+  @NotNull
   @Override
-  public List<StoredMultipartFile> filterByContext(@NotNull String context) {
+  public List<StoredMultipartFile> findByContext(@NotNull String context) {
     Assert.hasText(context, "Context cannot be empty.");
 
     return jdbc.query(SqlConstants.SELECT_BY_CONTEXT, new JdbcMultiPartFileResultExtractor(), context);
@@ -127,6 +128,9 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     Date now = new Date();
     Date expiresAt = new Date(now.getTime() + timeToLiveInSeconds * 1000);
     int count = jdbc.update(SqlConstants.UPDATE_EXPIRES_AT, expiresAt.getTime(), id);
+    if (count > 0) {
+      logger.debug("Set expiration of {} files to {}.", count, expiresAt);
+    }
     return count == 1 ? expiresAt : null;
   }
 
@@ -134,20 +138,46 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
   public int delete(@NotNull String id) {
     Assert.hasText(id, "File ID cannot be empty.");
 
-    return jdbc.update(SqlConstants.DELETE_BY_ID, id);
+    int count = jdbc.update(SqlConstants.DELETE_BY_ID, id);
+    if (count == 1) {
+      logger.debug("Deleted file '{}'.", id);
+    }
+    return count;
   }
 
   @Override
   public int deleteByContext(@NotNull String context) {
     Assert.hasText(context, "Context cannot be empty.");
 
-    return jdbc.update(SqlConstants.DELETE_BY_CONTEXT, context);
+    int count = jdbc.update(SqlConstants.DELETE_BY_CONTEXT, context);
+    if (count > 1) {
+      logger.debug("Deleted {} files with context '{}'.", count, context);
+    }
+    return count;
   }
 
   @Override
   public int deleteExpired() {
     Date now = new Date();
-    return jdbc.update(SqlConstants.DELETE_EXPIRED, now.getTime());
+    int count = jdbc.update(SqlConstants.DELETE_EXPIRED, now.getTime());
+    if (count > 0) {
+      logger.debug("Deleted {} expired files.", count);
+    }
+    return count;
+  }
+
+  @Override
+  public int deleteAll() {
+    int count = jdbc.update(SqlConstants.DELETE_ALL);
+    if (count > 0) {
+      logger.debug("Deleted {} files.", count);
+    }
+    return count;
+  }
+
+  @Override
+  public int count() {
+    return jdbc.queryForObject(SqlConstants.COUNT, Integer.class);
   }
 
   /* Utility */

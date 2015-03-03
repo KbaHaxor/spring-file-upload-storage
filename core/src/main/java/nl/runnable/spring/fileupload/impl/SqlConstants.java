@@ -31,4 +31,9 @@ abstract class SqlConstants {
   static final String DELETE_BY_CONTEXT = "DELETE FROM sfus_file WHERE context = ?";
 
   static final String DELETE_EXPIRED = "DELETE FROM sfus_file WHERE expires_at <= ?";
+
+  static final String DELETE_ALL = "DELETE FROM sfus_file";
+
+  static final String COUNT = "SELECT COUNT(*) FROM sfus_file";
+
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Laurens Fridael
  */
 public class StoredMultipartFileReturnValueHandler implements HandlerMethodReturnValueHandler {
+
   @Override
   public boolean supportsReturnType(MethodParameter returnType) {
     return StoredMultipartFile.class.isAssignableFrom(returnType.getParameterType());

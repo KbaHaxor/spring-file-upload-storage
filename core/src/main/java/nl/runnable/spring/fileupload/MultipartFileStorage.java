@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * <p>Defines data access operations for {@link MultipartFile}s.</p>
+ * <p>Defines storage operations for {@link MultipartFile}s.</p>
  *
  * @author Laurens Fridael
  */
@@ -48,7 +48,8 @@ public interface MultipartFileStorage {
    * @param context The context to filter against.
    * @return The matching files, sorted by the time they were created.
    */
-  List<StoredMultipartFile> filterByContext(@NotNull String context);
+  @NotNull
+  List<StoredMultipartFile> findByContext(@NotNull String context);
 
   /**
    * Sets a file's time to live.
@@ -82,5 +83,19 @@ public interface MultipartFileStorage {
    * @return The number of files deleted.
    */
   int deleteExpired();
+
+  /**
+   * Deletes all files.
+   *
+   * @return The number of files deleted.
+   */
+  int deleteAll();
+
+  /**
+   * Obtains the number of files stored.
+   *
+   * @return The number of files.
+   */
+  int count();
 
 }
