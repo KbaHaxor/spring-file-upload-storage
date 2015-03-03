@@ -10,7 +10,7 @@ Spring MVC has a convenient abstraction for handling file uploads through multip
 * Storing uploads as database BLOBs is more secure, but is not trivial to implement.
 * You also need a way to manage uploads in a timely manner, not keeping files around longer than necessary.
 
-Spring File Upload Storage aims to address the issues.
+Spring File Upload Storage aims to address these issues.
 
 ## Approach
 
