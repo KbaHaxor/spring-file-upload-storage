@@ -49,11 +49,15 @@ subprojects {
       }
     }
     repositories {
-      maven {
-        url 'https://api.bintray.com/maven/lfridael/maven/spring-file-upload-storage'
-        credentials {
-          username = project.hasProperty('BINTRAY_USERNAME') ? project.BINTRAY_USERNAME : ''
-          password = project.hasProperty('BINTRAY_API_KEY') ? project.BINTRAY_API_KEY : ''
+      if (project.hasProperty('PUBLISH_LOCAL')) {
+        mavenLocal()
+      } else {
+        maven {
+          url 'https://api.bintray.com/maven/lfridael/maven/spring-file-upload-storage'
+          credentials {
+            username = project.hasProperty('BINTRAY_USERNAME') ? project.BINTRAY_USERNAME : ''
+            password = project.hasProperty('BINTRAY_API_KEY') ? project.BINTRAY_API_KEY : ''
+          }
         }
       }
     }
