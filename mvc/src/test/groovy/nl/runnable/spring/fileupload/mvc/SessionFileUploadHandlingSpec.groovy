@@ -64,12 +64,32 @@ class SessionFileUploadHandlingSpec extends Specification {
     // .andExpect(content().contentTypeCompatibleWith("application/pdf"))
   }
 
-  def "DELETE produces 204 No Content and deletes the file from storage"() {
+  def "GET /session produces 200 OK and obtains the names of the files in session storage"() {
+    when:
+    def actions = mvc.perform(get('/session').session(session))
+    then:
+    actions.andExpect(status().is(200))
+        .andExpect(content().string('["test.pdf"]'))
+  }
+
+  def "DELETE <location> produces 204 No Content and deletes the file from session storage"() {
     expect:
     storage.count() == 2
 
     when:
     def actions = mvc.perform(delete(location).session(session))
+    then:
+    actions.andExpect(status().is(204))
+    storage.count() == 1
+
+  }
+
+  def "DELETE /session produces 204 No Content and deletes all files from session storage"() {
+    expect:
+    storage.count() == 2
+
+    when:
+    def actions = mvc.perform(delete("/session").session(session))
     then:
     actions.andExpect(status().is(204))
     storage.count() == 1

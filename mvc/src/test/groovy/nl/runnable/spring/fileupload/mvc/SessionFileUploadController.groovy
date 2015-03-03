@@ -21,9 +21,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*
 @RequestMapping("/session")
 class SessionFileUploadController {
 
-  /**
-   * Tests {@link HttpSessionMultipartFileStorageArgumentResolver}
-   */
   @RequestMapping(method = RequestMethod.POST)
   ResponseEntity<Void> post(SessionMultipartFileStorage storage, @RequestParam MultipartFile file) {
     def id = storage.save(file, MultipartFileStorage.TTL_30_MINUTES)
@@ -33,18 +30,27 @@ class SessionFileUploadController {
     return new ResponseEntity<Void>(headers, HttpStatus.CREATED)
   }
 
-  /**
-   * Tests {@link StoredMultipartFileReturnValueHandler}.
-   */
   @RequestMapping(method = RequestMethod.GET, value = "/{id}")
   StoredMultipartFile get(SessionMultipartFileStorage storage, @PathVariable String id) {
-    return storage.find(id);
+    return storage.find(id)
+  }
+
+  @RequestMapping(method = RequestMethod.GET)
+  @ResponseBody
+  List<String> getFilenames(SessionMultipartFileStorage storage) {
+    return storage.findAll().collect { it.originalFilename }
   }
 
   @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   void delete(SessionMultipartFileStorage storage, @PathVariable String id) {
-    storage.delete(id);
+    storage.delete(id)
+  }
+
+  @RequestMapping(method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  void deleteAll(SessionMultipartFileStorage storage) {
+    storage.deleteAll()
   }
 
 

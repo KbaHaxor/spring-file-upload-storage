@@ -36,6 +36,7 @@ public interface SessionMultipartFileStorage {
 
   /**
    * Obtains all files in the current session.
+   *
    * @return The available files or an empty list if no files are available.
    */
   @NotNull
@@ -48,7 +49,6 @@ public interface SessionMultipartFileStorage {
    * @return The number of files deleted, either 0 or 1.
    */
   int delete(@NotNull String id);
-
 
   /**
    * Deletes all file in the current session.

@@ -82,7 +82,7 @@ public abstract class AbstractSessionAssociatedMultipartFileStorage implements S
 
   @Override
   public void setTimeToLive(int timeToLiveInSeconds) {
-    for (StoredMultipartFile file: findAll()) {
+    for (StoredMultipartFile file : findAll()) {
       storage.setTimeToLive(file.getId(), timeToLiveInSeconds);
     }
   }

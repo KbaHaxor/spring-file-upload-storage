@@ -4,7 +4,6 @@ import nl.runnable.spring.fileupload.MultipartFileStorage;
 import nl.runnable.spring.fileupload.SessionMultipartFileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -22,8 +21,6 @@ public class HttpSessionMultipartFileStorageArgumentResolver implements HandlerM
   @Autowired
   private MultipartFileStorage storage;
 
-  private int sessionTimeoutInSeconds = MultipartFileStorage.TTL_30_MINUTES;
-
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
     return SessionMultipartFileStorage.class.isAssignableFrom(parameter.getParameterType());
@@ -38,13 +35,4 @@ public class HttpSessionMultipartFileStorageArgumentResolver implements HandlerM
     return sessionStorage;
   }
 
-  public void setSessionTimeoutInSeconds(int sessionTimeoutInSeconds) {
-    Assert.isTrue(sessionTimeoutInSeconds >= 0, "Timeout must be greater than or equal to 0.");
-
-    this.sessionTimeoutInSeconds = sessionTimeoutInSeconds;
-  }
-
-  protected int getSessionTimeoutInSeconds() {
-    return sessionTimeoutInSeconds;
-  }
 }
