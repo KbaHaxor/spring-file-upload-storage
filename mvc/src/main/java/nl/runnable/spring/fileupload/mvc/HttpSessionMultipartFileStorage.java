@@ -1,7 +1,7 @@
 package nl.runnable.spring.fileupload.mvc;
 
 import nl.runnable.spring.fileupload.MultipartFileStorage;
-import nl.runnable.spring.fileupload.impl.AbstractSessionAssociatedMultipartFileStorage;
+import nl.runnable.spring.fileupload.impl.AbstractSessionMultipartFileStorage;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.util.Assert;
 
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Laurens Fridael
  */
-class HttpSessionMultipartFileStorage extends AbstractSessionAssociatedMultipartFileStorage {
+class HttpSessionMultipartFileStorage extends AbstractSessionMultipartFileStorage {
 
   private final HttpServletRequest request;
 

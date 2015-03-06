@@ -27,11 +27,11 @@ import java.util.List;
  *
  * @author Laurens Fridael
  */
-public abstract class AbstractSessionAssociatedMultipartFileStorage implements SessionMultipartFileStorage {
+public abstract class AbstractSessionMultipartFileStorage implements SessionMultipartFileStorage {
 
   private final MultipartFileStorage storage;
 
-  protected AbstractSessionAssociatedMultipartFileStorage(@NotNull MultipartFileStorage storage) {
+  protected AbstractSessionMultipartFileStorage(@NotNull MultipartFileStorage storage) {
     Assert.notNull(storage);
 
     this.storage = storage;
