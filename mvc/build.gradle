@@ -8,6 +8,7 @@ dependencies {
   compile 'javax.servlet:javax.servlet-api:3.0.1'
   testCompile('org.springframework.hateoas:spring-hateoas:0.16.0.RELEASE') { transitive = false }
   testRuntime 'com.fasterxml.jackson.core:jackson-databind:2.4.3'
+  testRuntime('org.skyscreamer:jsonassert:1.2.3')
 }
 
 

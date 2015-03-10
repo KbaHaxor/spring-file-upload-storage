@@ -62,14 +62,22 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
   @NotNull
   @Override
   public String save(@NotNull final MultipartFile file, int timeToLiveInSeconds, @Nullable final String context) {
+    final String id = idGenerator.generateId();
+    save(file, id, timeToLiveInSeconds, context);
+    return id;
+  }
+
+  @Override
+  public void save(@NotNull final MultipartFile file, @NotNull final String id, int timeToLiveInSeconds,
+                   final @Nullable String context) {
     Assert.notNull(file, "File cannot be null.");
     if (file.getSize() > Integer.MAX_VALUE) {
       throw new IllegalArgumentException(String.format("Cannot store files larger than %d bytes.", Integer.MAX_VALUE));
     }
+    Assert.hasText(id, "ID cannot be empty.");
     Assert.isTrue(timeToLiveInSeconds >= 0, "Time to live must be greater than or equal to 0.");
     Assert.isTrue(context == null || context.length() <= 255, "Context cannot be longer than 255 characters");
 
-    final String id = idGenerator.generateId();
     final Date createdAt = new Date();
     final Date expiresAt = new Date(createdAt.getTime() + timeToLiveInSeconds * 1000);
     logger.debug("Saving multipart file '{}'. Expires at: {} ", id, expiresAt);
@@ -95,7 +103,6 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
         }
       }
     });
-    return id;
   }
 
   @Override

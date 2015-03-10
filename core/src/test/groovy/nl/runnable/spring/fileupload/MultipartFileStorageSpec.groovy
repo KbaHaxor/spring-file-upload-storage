@@ -3,12 +3,14 @@ package nl.runnable.spring.fileupload
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 /**
  * @author Laurens Fridael
  */
 @ContextConfiguration(classes = [TestConfig])
+@Transactional
 class MultipartFileStorageSpec extends Specification {
 
   @Autowired
@@ -22,19 +24,14 @@ class MultipartFileStorageSpec extends Specification {
 
   def setup() {
     def file = new MockMultipartFile(
+        'file',
         'test.pdf',
-        'test.pdf.original',
         'application/pdf',
         [1, 2, 3, 4] as byte[]
     )
     fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
     storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
-    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, otherContext)
-  }
-
-  def cleanup() {
-    storage.deleteByContext(context)
-    storage.deleteByContext(otherContext)
+    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, "another-context")
   }
 
   def 'Retrieving a file yields data that is equivalent to that of the input file'() {
@@ -44,8 +41,8 @@ class MultipartFileStorageSpec extends Specification {
     file.transferTo(tempFile)
     then:
     file.id == fileId
-    file.name == 'test.pdf'
-    file.originalFilename == 'test.pdf.original'
+    file.name == 'file'
+    file.originalFilename == 'test.pdf'
     file.contentType == 'application/pdf'
     file.size == 4
     !file.empty
@@ -91,7 +88,6 @@ class MultipartFileStorageSpec extends Specification {
     storage.delete(fileId) == 0
   }
 
-
   def 'Deleting expired files removes them from storage'() {
     expect:
     storage.deleteExpired() == 0
@@ -120,4 +116,32 @@ class MultipartFileStorageSpec extends Specification {
     expect:
     storage.count() == 3
   }
+
+  def 'Can save a file using a predefined ID'() {
+    given:
+    def file = new MockMultipartFile(
+        'another-file',
+        'another-file.pdf',
+        'application/pdf',
+        [5, 6, 7, 8] as byte[]
+    )
+    storage.save(file, 'predefined-id', MultipartFileStorage.TTL_30_MINUTES, null)
+    expect:
+    storage.find('predefined-id')
+  }
+
+  def 'Cannot save a file using a duplicate ID'() {
+    given:
+    def file = new MockMultipartFile(
+        'another-file',
+        'another-file.pdf',
+        'application/pdf',
+        [5, 6, 7, 8] as byte[]
+    )
+    when:
+    storage.save(file, fileId, MultipartFileStorage.TTL_30_MINUTES, null)
+    then:
+    thrown(Exception)
+  }
+
 }

@@ -46,6 +46,11 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     return storage.save(file, timeToLiveInSeconds, getSessionId());
   }
 
+  @Override
+  public void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds) {
+    storage.save(file, id, timeToLiveInSeconds, getSessionId());
+  }
+
   @Nullable
   @Override
   public StoredMultipartFile find(@NotNull String id) {

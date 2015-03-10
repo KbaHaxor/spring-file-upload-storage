@@ -26,6 +26,15 @@ public interface SessionMultipartFileStorage {
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds);
 
   /**
+   * Saves the file in the current session using a predefined ID.
+   *
+   * @param file                The file.
+   * @param id                  The ID.
+   * @param timeToLiveInSeconds The time to live.
+   */
+  void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds);
+
+  /**
    * Finds a file in the current session.
    *
    * @param id The file's ID.

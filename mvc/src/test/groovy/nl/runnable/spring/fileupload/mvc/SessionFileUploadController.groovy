@@ -24,6 +24,7 @@ class SessionFileUploadController {
   @RequestMapping(method = RequestMethod.POST)
   ResponseEntity<Void> post(SessionMultipartFileStorage storage, @RequestParam MultipartFile file) {
     def id = storage.save(file, MultipartFileStorage.TTL_30_MINUTES)
+    storage.save(file, "${id}-copy", MultipartFileStorage.TTL_30_MINUTES)
     def headers = new HttpHeaders()
     String location = linkTo(getClass()).slash(id).toString()
     headers.add("Location", location)

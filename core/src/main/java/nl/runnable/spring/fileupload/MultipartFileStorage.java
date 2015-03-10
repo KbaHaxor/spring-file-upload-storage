@@ -34,6 +34,20 @@ public interface MultipartFileStorage {
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String context);
 
   /**
+   * Saves multipart file using a predefined ID.
+   *
+   * @param file                The multipart file.
+   * @param id                  The ID>
+   * @param timeToLiveInSeconds The time to keep the file in storage. After this time expires, the file becomes
+   *                            eligible for cleanup.
+   * @param context             Optional context value to associate with this file. The context can, for example, be the
+   *                            username or the HTTP session ID. The purpose of the context is to make application code
+   *                            responsible for managing client state. The context can be retrieved using
+   *                            {@link StoredMultipartFile#getContext()}.
+   */
+  void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds, @Nullable String context);
+
+  /**
    * Obtains a file.
    *
    * @param id The file's ID

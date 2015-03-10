@@ -9,6 +9,7 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultHandler
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebAppConfiguration
 @ContextConfiguration(classes = TestConfig)
+@Transactional
 class SessionFileUploadHandlingSpec extends Specification {
 
   @Autowired
@@ -47,10 +49,6 @@ class SessionFileUploadHandlingSpec extends Specification {
         MultipartFileStorage.TTL_30_MINUTES, null)
   }
 
-  def cleanup() {
-    storage.deleteAll()
-  }
-
   def "GET <location> produces 200 OK and obtains the file's content"() {
     expect:
     location
@@ -69,24 +67,24 @@ class SessionFileUploadHandlingSpec extends Specification {
     def actions = mvc.perform(get('/session').session(session))
     then:
     actions.andExpect(status().is(200))
-        .andExpect(content().string('["test.pdf"]'))
+        .andExpect(content().json('["test.pdf", "test.pdf"]'))
   }
 
   def "DELETE <location> produces 204 No Content and deletes the file from session storage"() {
     expect:
-    storage.count() == 2
+    storage.count() == 3
 
     when:
     def actions = mvc.perform(delete(location).session(session))
     then:
     actions.andExpect(status().is(204))
-    storage.count() == 1
+    storage.count() == 2
 
   }
 
   def "DELETE /session produces 204 No Content and deletes all files from session storage"() {
     expect:
-    storage.count() == 2
+    storage.count() == 3
 
     when:
     def actions = mvc.perform(delete("/session").session(session))

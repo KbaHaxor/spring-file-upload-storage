@@ -6,7 +6,9 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.jdbc.datasource.SingleConnectionDataSource
+import org.springframework.transaction.PlatformTransactionManager
 
 import javax.sql.DataSource
 
@@ -29,7 +31,12 @@ class TestConfig {
     dataSource.url = 'jdbc:h2:mem:.;DB_CLOSE_ON_EXIT=FALSE'
     dataSource.username = 'sa'
     dataSource.password = ''
-    return dataSource;
+    return dataSource
+  }
+
+  @Bean
+  PlatformTransactionManager transactionManager(DataSource dataSource) {
+    return new DataSourceTransactionManager(dataSource)
   }
 
 }
