@@ -46,6 +46,7 @@ subprojects {
         artifact sourceJar {
           classifier "sources"
         }
+        artifactId "spring-file-upload-storage-${project.name}"
       }
     }
     repositories {
