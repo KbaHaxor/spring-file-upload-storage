@@ -19,7 +19,9 @@ public class ResourceMultipartFile implements MultipartFile {
 
   private final Resource resource;
 
-  private String name;
+  private final String name;
+
+  private String originalFilename;
 
   private final String contentType;
 
@@ -32,8 +34,7 @@ public class ResourceMultipartFile implements MultipartFile {
    * @param contentType The content type or {@code null} if unspecified.
    * @param size        The resource size.
    */
-  public ResourceMultipartFile(@NotNull Resource resource, @NotNull String name, @Nullable String contentType,
-                               long size) {
+  public ResourceMultipartFile(@NotNull Resource resource, @NotNull String name, @Nullable String contentType, long size) {
     Assert.notNull(resource, "Resource cannot be null.");
     Assert.hasText(name, "Name cannot be empty.");
     Assert.isTrue(size >= 0, "Size cannot be less than 0.");
@@ -41,6 +42,7 @@ public class ResourceMultipartFile implements MultipartFile {
 
     this.resource = resource;
     this.name = name;
+
     this.contentType = contentType;
     this.size = (int) size;
   }
@@ -52,7 +54,11 @@ public class ResourceMultipartFile implements MultipartFile {
 
   @Override
   public String getOriginalFilename() {
-    return resource.getFilename();
+    return originalFilename;
+  }
+
+  public void setOriginalFilename(String originalFilename) {
+    this.originalFilename = originalFilename;
   }
 
   @Override
