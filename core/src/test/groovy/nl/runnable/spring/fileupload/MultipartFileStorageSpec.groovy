@@ -22,6 +22,8 @@ class MultipartFileStorageSpec extends Specification {
 
   String otherContext = 'another-context'
 
+  String metadata = 'some-metadata'
+
   def setup() {
     def file = new MockMultipartFile(
         'file',
@@ -29,9 +31,9 @@ class MultipartFileStorageSpec extends Specification {
         'application/pdf',
         [1, 2, 3, 4] as byte[]
     )
-    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
-    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context)
-    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, "another-context")
+    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context, metadata)
+    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, context, metadata)
+    storage.save(file, MultipartFileStorage.TTL_30_MINUTES, "another-context", metadata)
   }
 
   def 'Retrieving a file yields data that is equivalent to that of the input file'() {
@@ -49,6 +51,7 @@ class MultipartFileStorageSpec extends Specification {
     file.bytes == [1, 2, 3, 4] as byte[]
     file.id == fileId
     file.context == context
+    file.metadata == metadata
     file.createdAt
     file.expiresAt.time == file.createdAt.time + (MultipartFileStorage.TTL_30_MINUTES * 1000)
   }
@@ -79,6 +82,14 @@ class MultipartFileStorageSpec extends Specification {
     def file = storage.find(fileId)
     then:
     expiresAt.time == file.expiresAt.time
+  }
+
+  def "Setting a file's metadata makes the new metadata retrievable in subsequent find() invocations."() {
+    when:
+    storage.setMetadata(fileId, 'new-metadata')
+    def file = storage.find(fileId)
+    then:
+    file.metadata == 'new-metadata'
   }
 
   def 'Deleting a file removes it from storage'() {
@@ -125,7 +136,7 @@ class MultipartFileStorageSpec extends Specification {
         'application/pdf',
         [5, 6, 7, 8] as byte[]
     )
-    storage.save(file, 'predefined-id', MultipartFileStorage.TTL_30_MINUTES, null)
+    storage.save(file, 'predefined-id', MultipartFileStorage.TTL_30_MINUTES, null, null)
     expect:
     storage.find('predefined-id')
   }
@@ -139,7 +150,7 @@ class MultipartFileStorageSpec extends Specification {
         [5, 6, 7, 8] as byte[]
     )
     when:
-    storage.save(file, fileId, MultipartFileStorage.TTL_30_MINUTES, null)
+    storage.save(file, fileId, MultipartFileStorage.TTL_30_MINUTES, null, null)
     then:
     thrown(Exception)
   }

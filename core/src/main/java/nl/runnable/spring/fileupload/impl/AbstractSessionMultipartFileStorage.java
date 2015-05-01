@@ -43,13 +43,26 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     Assert.notNull(file, "File cannot be null.");
     Assert.isTrue(timeToLiveInSeconds > 0, "Time to live must be greater than or equal to 0.");
 
-    return storage.save(file, timeToLiveInSeconds, getSessionId());
+    return save(file, timeToLiveInSeconds, null);
+  }
+
+  @NotNull
+  @Override
+  public String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String metadata) {
+    return storage.save(file, timeToLiveInSeconds, getSessionId(), metadata);
   }
 
   @Override
   public void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds) {
-    storage.save(file, id, timeToLiveInSeconds, getSessionId());
+    save(file, id, timeToLiveInSeconds, null);
   }
+
+  @Override
+  public void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds,
+                   @Nullable String metadata) {
+    storage.save(file, id, timeToLiveInSeconds, getSessionId(), metadata);
+  }
+
 
   @Nullable
   @Override
@@ -57,7 +70,7 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     Assert.hasText(id, "ID cannot be empty.");
 
     StoredMultipartFile file = storage.find(id);
-    if (file != null && isBoundToSession(file)) {
+    if (isBoundToSession(file)) {
       return file;
     }
     return file;
@@ -74,7 +87,7 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     Assert.hasText(id, "ID cannot be empty.");
 
     StoredMultipartFile file = find(id);
-    if (file != null && isBoundToSession(file)) {
+    if (isBoundToSession(file)) {
       return storage.delete(file.getId());
     }
     return 0;
@@ -92,8 +105,25 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     }
   }
 
-  private boolean isBoundToSession(@NotNull StoredMultipartFile file) {
-    return getSessionId().equals(file.getContext());
+  @Override
+  public int setMetadata(@NotNull String id, @Nullable String metadata) {
+    StoredMultipartFile file = find(id);
+    if (isBoundToSession(file)) {
+      return storage.setMetadata(id, metadata);
+    }
+    return 0;
+  }
+
+  /**
+   * Tests if the given file is bound to the current session.
+   *
+   * @param file
+   * @return {@code true} if the file is not {@code null} and has a context that is equal to the session ID.
+   * @see StoredMultipartFile#getContext()
+   * @see #getSessionId()
+   */
+  private boolean isBoundToSession(@Nullable StoredMultipartFile file) {
+    return file != null && getSessionId().equals(file.getContext());
   }
 
   /**

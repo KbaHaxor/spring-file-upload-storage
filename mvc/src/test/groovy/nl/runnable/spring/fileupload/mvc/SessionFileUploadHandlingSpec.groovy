@@ -46,7 +46,7 @@ class SessionFileUploadHandlingSpec extends Specification {
         .getRequest()
         .getSession() as MockHttpSession
     storage.save(new MockMultipartFile("file2", "test2.pdf", "application/pdf", [5, 6, 7, 8] as byte[]),
-        MultipartFileStorage.TTL_30_MINUTES, null)
+        MultipartFileStorage.TTL_30_MINUTES, null, null)
   }
 
   def "GET <location> produces 200 OK and obtains the file's content"() {
@@ -79,7 +79,6 @@ class SessionFileUploadHandlingSpec extends Specification {
     then:
     actions.andExpect(status().is(204))
     storage.count() == 2
-
   }
 
   def "DELETE /session produces 204 No Content and deletes all files from session storage"() {
@@ -91,7 +90,6 @@ class SessionFileUploadHandlingSpec extends Specification {
     then:
     actions.andExpect(status().is(204))
     storage.count() == 1
-
   }
 
 }

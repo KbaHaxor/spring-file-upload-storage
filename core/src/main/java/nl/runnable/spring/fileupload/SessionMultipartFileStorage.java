@@ -25,6 +25,9 @@ public interface SessionMultipartFileStorage {
   @NotNull
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds);
 
+  @NotNull
+  String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String metadata);
+
   /**
    * Saves the file in the current session using a predefined ID.
    *
@@ -33,6 +36,8 @@ public interface SessionMultipartFileStorage {
    * @param timeToLiveInSeconds The time to live.
    */
   void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds);
+
+  void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds, @Nullable String metadata);
 
   /**
    * Finds a file in the current session.
@@ -72,5 +77,14 @@ public interface SessionMultipartFileStorage {
    * @param timeToLiveInSeconds The time-to-live.
    */
   void setTimeToLive(int timeToLiveInSeconds);
+
+  /**
+   * Sets the metadata of a given in the current session.
+   *
+   * @param id
+   * @param metadata
+   * @return The number of files affected, either 0 or 1.
+   */
+  int setMetadata(@NotNull String id, @Nullable String metadata);
 
 }

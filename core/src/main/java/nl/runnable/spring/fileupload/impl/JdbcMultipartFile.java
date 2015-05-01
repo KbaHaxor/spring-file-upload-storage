@@ -2,6 +2,7 @@ package nl.runnable.spring.fileupload.impl;
 
 import nl.runnable.spring.fileupload.StoredMultipartFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -32,6 +33,8 @@ class JdbcMultipartFile implements StoredMultipartFile {
 
   private String context;
 
+  private String metadata;
+
   private Date createdAt;
 
   private Date expiresAt;
@@ -41,6 +44,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     this.jdbc = jdbc;
   }
 
+  @NotNull
   public String getId() {
     return id;
   }
@@ -119,6 +123,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
   }
 
 
+  @Nullable
   public String getContext() {
     return context;
   }
@@ -127,6 +132,17 @@ class JdbcMultipartFile implements StoredMultipartFile {
     this.context = context;
   }
 
+  @Nullable
+  @Override
+  public String getMetadata() {
+    return metadata;
+  }
+
+  public void setMetadata(String metadata) {
+    this.metadata = metadata;
+  }
+
+  @NotNull
   public Date getCreatedAt() {
     return createdAt;
   }
@@ -135,6 +151,7 @@ class JdbcMultipartFile implements StoredMultipartFile {
     this.createdAt = createdAt;
   }
 
+  @NotNull
   public Date getExpiresAt() {
     return expiresAt;
   }

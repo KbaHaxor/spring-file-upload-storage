@@ -26,7 +26,7 @@ class CleanupExpiredFilesJobSpec extends Specification {
         'application/pdf',
         [1, 2, 3, 4] as byte[]
     )
-    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, 'my-context')
+    fileId = storage.save(file, MultipartFileStorage.TTL_30_MINUTES, 'my-context', null)
   }
 
   def 'Cleans up expired files automatically'() {

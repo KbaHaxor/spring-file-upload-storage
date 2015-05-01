@@ -28,10 +28,12 @@ public interface MultipartFileStorage {
    *                            username or the HTTP session ID. The purpose of the context is to make application code
    *                            responsible for managing client state. The context can be retrieved using
    *                            {@link StoredMultipartFile#getContext()}.
+   * @param metadata            Optional metadata
    * @return The ID of the stored file.
    */
   @NotNull
-  String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String context);
+  String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String context,
+              @Nullable String metadata);
 
   /**
    * Saves multipart file using a predefined ID.
@@ -44,8 +46,10 @@ public interface MultipartFileStorage {
    *                            username or the HTTP session ID. The purpose of the context is to make application code
    *                            responsible for managing client state. The context can be retrieved using
    *                            {@link StoredMultipartFile#getContext()}.
+   * @param metadata            Optional metadata
    */
-  void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds, @Nullable String context);
+  void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds, @Nullable String context,
+            @Nullable String metadata);
 
   /**
    * Obtains a file.
@@ -74,6 +78,15 @@ public interface MultipartFileStorage {
    */
   @Nullable
   Date setTimeToLive(@NotNull String id, int timeToLiveInSeconds);
+
+  /**
+   * Sets a file's metadata.
+   *
+   * @param id       The file ID.
+   * @param metadata The metadata.
+   * @return the number of files updates, either 0 or 1.
+   */
+  int setMetadata(@NotNull String id, @Nullable String metadata);
 
   /**
    * Deletes a file.

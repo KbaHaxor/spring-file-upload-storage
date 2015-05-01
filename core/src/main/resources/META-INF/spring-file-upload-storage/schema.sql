@@ -6,6 +6,7 @@ create table sfus_file (
 	size int not null,
 	data blob,
 	context varchar(255),
+	metadata varchar(255),
 	created_at bigint not null,
 	expires_at bigint not null
 );

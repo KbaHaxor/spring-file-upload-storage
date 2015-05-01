@@ -61,15 +61,16 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
 
   @NotNull
   @Override
-  public String save(@NotNull final MultipartFile file, int timeToLiveInSeconds, @Nullable final String context) {
+  public String save(@NotNull final MultipartFile file, int timeToLiveInSeconds, @Nullable final String context,
+                     @Nullable String metadata) {
     final String id = idGenerator.generateId();
-    save(file, id, timeToLiveInSeconds, context);
+    save(file, id, timeToLiveInSeconds, context, metadata);
     return id;
   }
 
   @Override
   public void save(@NotNull final MultipartFile file, @NotNull final String id, int timeToLiveInSeconds,
-                   final @Nullable String context) {
+                   final @Nullable String context, final @Nullable String metadata) {
     Assert.notNull(file, "File cannot be null.");
     if (file.getSize() > Integer.MAX_VALUE) {
       throw new IllegalArgumentException(String.format("Cannot store files larger than %d bytes.", Integer.MAX_VALUE));
@@ -77,6 +78,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     Assert.hasText(id, "ID cannot be empty.");
     Assert.isTrue(timeToLiveInSeconds >= 0, "Time to live must be greater than or equal to 0.");
     Assert.isTrue(context == null || context.length() <= 255, "Context cannot be longer than 255 characters");
+    Assert.isTrue(metadata == null || metadata.length() <= 255, "Metadata cannot be longer than 255 characters");
 
     final Date createdAt = new Date();
     final Date expiresAt = new Date(createdAt.getTime() + timeToLiveInSeconds * 1000);
@@ -95,6 +97,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
           ps.setInt(pos++, (int) file.getSize());
           lobCreator.setBlobAsBinaryStream(ps, pos++, file.getInputStream(), (int) file.getSize());
           ps.setString(pos++, context);
+          ps.setString(pos++, metadata);
           ps.setLong(pos++, createdAt.getTime());
           ps.setLong(pos++, expiresAt.getTime());
           Assert.state(pos - 1 == SqlConstants.COLUMN_COUNT, "Unexpected column count.");
@@ -136,9 +139,20 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
     Date expiresAt = new Date(now.getTime() + timeToLiveInSeconds * 1000);
     int count = jdbc.update(SqlConstants.UPDATE_EXPIRES_AT, expiresAt.getTime(), id);
     if (count > 0) {
-      logger.debug("Set expiration of {} files to {}.", count, expiresAt);
+      logger.debug("Set expiration of {} file(s) to {}.", count, expiresAt);
     }
     return count == 1 ? expiresAt : null;
+  }
+
+  @Override
+  public int setMetadata(@NotNull String id, @Nullable String metadata) {
+    Assert.hasText(id, "File ID cannot be empty.");
+
+    int count = jdbc.update(SqlConstants.UPDATE_METADATA, metadata, id);
+    if (count > 0) {
+      logger.debug("Set metadata of {} file(s) to '{}'.", count, metadata);
+    }
+    return count;
   }
 
   @Override
@@ -201,6 +215,7 @@ public class JdbcMultipartFileStorage implements MultipartFileStorage, Initializ
         file.setContentType(rs.getString("content_type"));
         file.setSize(rs.getInt("size"));
         file.setContext(rs.getString("context"));
+        file.setMetadata(rs.getString("metadata"));
         file.setCreatedAt(new Date(rs.getLong("created_at")));
         file.setExpiresAt(new Date(rs.getLong("expires_at")));
         files.add(file);
