@@ -72,8 +72,9 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     StoredMultipartFile file = storage.find(id);
     if (isBoundToSession(file)) {
       return file;
+    } else {
+      return null;
     }
-    return file;
   }
 
   @NotNull
