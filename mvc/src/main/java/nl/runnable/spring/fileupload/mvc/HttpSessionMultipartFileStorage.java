@@ -21,7 +21,7 @@ class HttpSessionMultipartFileStorage extends AbstractSessionMultipartFileStorag
   }
 
   @NotNull
-  protected String getSessionId() {
+  public String getSessionId() {
     return request.getSession(true).getId();
   }
 

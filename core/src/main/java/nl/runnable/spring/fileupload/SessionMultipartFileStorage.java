@@ -87,4 +87,11 @@ public interface SessionMultipartFileStorage {
    */
   int setMetadata(@NotNull String id, @Nullable String metadata);
 
+  /**
+   * Obtains the session ID.  Implementations should create a new session, if no session is currently available.
+   *
+   * @return The session ID
+   */
+  @NotNull
+  String getSessionId();
 }

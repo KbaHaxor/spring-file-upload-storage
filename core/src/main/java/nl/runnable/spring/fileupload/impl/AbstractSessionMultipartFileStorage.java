@@ -127,11 +127,4 @@ public abstract class AbstractSessionMultipartFileStorage implements SessionMult
     return file != null && getSessionId().equals(file.getContext());
   }
 
-  /**
-   * Obtains the ID of the current session. Implementations should create a new session if necessary.
-   *
-   * @return The current session ID.
-   */
-  @NotNull
-  protected abstract String getSessionId();
 }
