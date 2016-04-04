@@ -49,4 +49,4 @@ implement the actual file upload logic using the Spring File Upload API.
 
 ## License
 
-[Public Domain](https://github.com/lfridael/spring-file-upload-storage/example-app/blob/master/LICENSE)
+[Public Domain](https://github.com/lfridael/spring-file-upload-storage/blob/master/LICENSE)

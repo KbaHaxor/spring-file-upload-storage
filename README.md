@@ -21,7 +21,7 @@ Spring File Upload Storage aims to address these issues.
 
 ## Example app
 
-The [Example app](https://github.com/lfridael/spring-file-upload-storage/example-app) shows to use this library in a Spring Boot web app.
+The [Example app](https://github.com/lfridael/spring-file-upload-storage/tree/master/example-app) shows to use this library in a Spring Boot web app.
 
 ## Dependencies
 
