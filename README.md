@@ -36,3 +36,7 @@ Spring File Upload Storage aims to address these issues.
 # Windows
 ./gradlew.bat
 ```
+
+## License
+
+[Public Domain](https://github.com/lfridael/spring-file-upload-storage/blob/master/LICENSE)
