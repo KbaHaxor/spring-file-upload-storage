@@ -19,6 +19,10 @@ Spring File Upload Storage aims to address these issues.
 * Maintains files using a time-to-live mechanism.
 * Cleans up expired files automatically.
 
+## Example app
+
+The [Example app](https://github.com/lfridael/spring-file-upload-storage/example-app) shows to use this library in a Spring Boot web app.
+
 ## Dependencies
 
 * Java 1.6+

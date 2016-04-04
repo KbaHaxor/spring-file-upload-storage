@@ -1,0 +1,85 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.3.3.RELEASE</version>
+  </parent>
+
+  <properties>
+    <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
+    <spring-file-upload-storage.version>0.0.6</spring-file-upload-storage.version>
+    <h2.version>1.3.176</h2.version>
+  </properties>
+
+  <groupId>nl.runnable.spring-file-upload-storage.example</groupId>
+  <artifactId>spring-file-upload-storage-example-app</artifactId>
+  <name>Spring File Upload Storage example</name>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mustache</artifactId>
+    </dependency>
+    <!-- Note: you need to declare dependencies on both 'core' and 'mvc' libraries. -->
+    <!-- Issue with transitive dependencies: https://github.com/lfridael/spring-file-upload-storage/issues/1 -->
+    <dependency>
+      <groupId>nl.runnable.spring-file-upload-storage</groupId>
+      <artifactId>spring-file-upload-storage-core</artifactId>
+      <version>${spring-file-upload-storage.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>nl.runnable.spring-file-upload-storage</groupId>
+      <artifactId>spring-file-upload-storage-mvc</artifactId>
+      <version>${spring-file-upload-storage.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>spring-file-upload-storage-example</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <!-- Spring File Upload Storage libraries are hosted in this Maven repo. -->
+    <repository>
+      <url>http://dl.bintray.com/lfridael/maven</url>
+      <id>bintray-lfridael-maven</id>
+      <name>bintray</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+</project>
