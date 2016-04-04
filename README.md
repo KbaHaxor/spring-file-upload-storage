@@ -21,12 +21,11 @@ Spring File Upload Storage aims to address these issues.
 
 ## Dependencies
 
-* Required:
-  * Java 1.6
-  * Spring 4.0 or higher, specifically these artifacts
-  	* spring-web
-  	* spring-jdbc
-  * slf4j-api
+* Java 1.6+
+* Spring 4.0+, specifically these libraries
+    * spring-web
+    * spring-jdbc
+* slf4j-api
 
 ## Build
 
