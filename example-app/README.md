@@ -1,6 +1,6 @@
 # Spring File Upload Storage example app
 
-This example shows how to use [Spring File Upload Storage](..) in a Spring Boot web app.
+This example shows how to use [Spring File Upload Storage](https://github.com/lfridael/spring-file-upload-storage) in a Spring Boot web app.
 
 ## Build and run
 
