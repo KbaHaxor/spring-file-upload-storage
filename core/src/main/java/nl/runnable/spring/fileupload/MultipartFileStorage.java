@@ -55,7 +55,7 @@ public interface MultipartFileStorage {
    * Obtains a file.
    *
    * @param id The file's ID
-   * @return The matching file or {@literal null} if no match was found.
+   * @return The matching file or {@code null} if no match was found.
    */
   @Nullable
   StoredMultipartFile find(@NotNull String id);
@@ -74,7 +74,7 @@ public interface MultipartFileStorage {
    *
    * @param id                  The file ID.
    * @param timeToLiveInSeconds The time to live from now.
-   * @return The new date/time at which the file is due to expire or {@literal null} if no matching file was found.
+   * @return The new date/time at which the file is due to expire or {@code null} if no matching file was found.
    */
   @Nullable
   Date setTimeToLive(@NotNull String id, int timeToLiveInSeconds);
@@ -84,7 +84,7 @@ public interface MultipartFileStorage {
    *
    * @param id       The file ID.
    * @param metadata The metadata.
-   * @return the number of files updates, either 0 or 1.
+   * @return the number of files updated, either 0 or 1.
    */
   int setMetadata(@NotNull String id, @Nullable String metadata);
 
@@ -92,7 +92,7 @@ public interface MultipartFileStorage {
    * Deletes a file.
    *
    * @param id The file's ID.
-   * @return The number of files deleted, which is either 0 or 1.
+   * @return The number of files deleted, either 0 or 1.
    */
   int delete(@NotNull String id);
 

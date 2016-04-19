@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Controller for managing files.
  * <p>
- * This implementation shows how to use {@link SessionMultipartFileStorage}. The Spring
+ * This implementation shows how to use {@link SessionMultipartFileStorage}.
  * </p>
  *
  * @author Laurens Fridael
@@ -24,8 +24,9 @@ import java.util.*;
 @RequestMapping("/files")
 public class FileController {
 
-  // Typically, an application makes the time-to-live setting configurable.
-  // In this example, files are kept in storage for 1 hour by default.
+  /**
+   * An easy way of making the time-to-live setting configurable, is to use {@code @Value}.
+   */
   @Value("${app.fileupload.ttl:3600}")
   private int timeToLiveInSeconds;
 
@@ -102,7 +103,7 @@ public class FileController {
    * @param id
    * @param storage
    * @return
-   * @throws FileNotFoundException
+   * @throws FileNotFoundException If the file cannot be found.
    */
   @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
   String delete(@PathVariable("id") String id, SessionMultipartFileStorage storage) throws FileNotFoundException {

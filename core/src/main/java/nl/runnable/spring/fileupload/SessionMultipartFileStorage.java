@@ -19,12 +19,18 @@ public interface SessionMultipartFileStorage {
    * @param file                The file.
    * @param timeToLiveInSeconds The time to live.
    * @return The ID of the stored  file.
-   * @see nl.runnable.spring.fileupload.MultipartFileStorage#save(org.springframework.web.multipart.MultipartFile,
-   * int, String)
    */
   @NotNull
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds);
 
+  /**
+   * Saves the file in the current session with optional metadata.
+   *
+   * @param file                The file.
+   * @param timeToLiveInSeconds The time to live.
+   * @param metadata            Optional metadata
+   * @return The ID of the stored  file.
+   */
   @NotNull
   String save(@NotNull MultipartFile file, int timeToLiveInSeconds, @Nullable String metadata);
 
@@ -37,13 +43,21 @@ public interface SessionMultipartFileStorage {
    */
   void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds);
 
+  /**
+   * Saves the file in the current session using a predefined ID with optional metadata.
+   *
+   * @param file                The file.
+   * @param id                  The ID.
+   * @param timeToLiveInSeconds The time to live.
+   * @param metadata            Optional metadata
+   */
   void save(@NotNull MultipartFile file, @NotNull String id, int timeToLiveInSeconds, @Nullable String metadata);
 
   /**
    * Finds a file in the current session.
    *
    * @param id The file's ID.
-   * @return The matching file or {@literal null} if no match was found in the current session.
+   * @return The matching file or {@code null} if no match was found in the current session.
    */
   @Nullable
   StoredMultipartFile find(@NotNull String id);
@@ -79,7 +93,7 @@ public interface SessionMultipartFileStorage {
   void setTimeToLive(int timeToLiveInSeconds);
 
   /**
-   * Sets the metadata of a given in the current session.
+   * Updates the metadata of a file with a given ID in the current session.
    *
    * @param id
    * @param metadata
