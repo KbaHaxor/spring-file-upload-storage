@@ -19,9 +19,14 @@ Spring File Upload Storage aims to address these issues.
 * Maintains files using a time-to-live mechanism.
 * Cleans up expired files automatically.
 
+## Core API
+
+* [MultipartFileStorage](https://github.com/lfridael/spring-file-upload-storage/blob/master/core/src/main/java/nl/runnable/spring/fileupload/MultipartFileStorage.java) for accessing the global file storage
+* [SessionMultipartFileStorage](https://github.com/lfridael/spring-file-upload-storage/blob/master/core/src/main/java/nl/runnable/spring/fileupload/SessionMultipartFileStorage.java) for accessing storage that is bound to a user session
+
 ## Example app
 
-The [Example app](https://github.com/lfridael/spring-file-upload-storage/tree/master/example-app) shows to use this library in a Spring Boot web app.
+The [Example app](https://github.com/lfridael/spring-file-upload-storage/tree/master/example-app) shows to use the library in a Spring Boot web app.
 
 ## Dependencies
 
